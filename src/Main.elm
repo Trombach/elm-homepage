@@ -97,13 +97,13 @@ view model =
                 viewHomePage
 
             Router.TimeLine ->
-                Debug.todo "branch 'TimeLine' not implemented"
+                div [] []
 
             Router.About ->
-                Debug.todo "branch 'About' not implemented"
+                div [] []
 
             Router.NotFound ->
-                Debug.todo "branch 'NotFound' not implemented"
+                div [] []
         ]
     }
 

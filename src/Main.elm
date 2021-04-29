@@ -1,10 +1,9 @@
 module Main exposing (main)
 
-import Bootstrap.Navbar as Navbar
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (..)
-import Html.Attributes exposing (href)
+import Element exposing (Element, el, fill, height, layout, px, rgb, row, spacing, text, width)
+import Element.Background as Background
 import Router
 import Url
 
@@ -32,18 +31,12 @@ main =
 type alias Model =
     { key : Nav.Key
     , route : Router.Route
-    , navbarState : Navbar.State
     }
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key Router.Home navbarState, Cmd.none )
-
-
-navbarState : Navbar.State
-navbarState =
-    Tuple.first (Navbar.initialState NavbarMsg)
+    ( Model key Router.Home, Cmd.none )
 
 
 
@@ -53,7 +46,6 @@ navbarState =
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
-    | NavbarMsg Navbar.State
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -70,17 +62,28 @@ update msg model =
         UrlChanged url ->
             ( { model | route = Router.toRoute url }, Cmd.none )
 
-        NavbarMsg state ->
-            ( { model | navbarState = state }, Cmd.none )
-
 
 
 -- SUBSCRIPTIONS
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-    Navbar.subscriptions model.navbarState NavbarMsg
+subscriptions _ =
+    Sub.none
+
+
+
+-- COLOR DEF
+
+
+backgroundColor : Element.Color
+backgroundColor =
+    rgb 0.16 0.38 1
+
+
+highlightColor : Element.Color
+highlightColor =
+    rgb 0.27 0.54 1
 
 
 
@@ -91,19 +94,19 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "My Hompage"
     , body =
-        [ viewNavBar model
-        , case model.route of
-            Router.Home ->
-                viewHomePage
+        [ layout [] viewNavBar
 
-            Router.TimeLine ->
-                div [] []
-
-            Router.About ->
-                div [] []
-
-            Router.NotFound ->
-                div [] []
+        -- , layout []
+        --     (case model.route of
+        --         Router.Home ->
+        --             viewHomePage
+        --         Router.TimeLine ->
+        --             el [] (text "Time Line")
+        --         Router.About ->
+        --             el [] (text "About")
+        --         Router.NotFound ->
+        --             el [] (text "Page Not Found")
+        --     )
         ]
     }
 
@@ -112,20 +115,26 @@ view model =
 -- VIEW NAV BAR
 
 
-viewNavBar : Model -> Html Msg
-viewNavBar model =
-    Navbar.config NavbarMsg
-        |> Navbar.withAnimation
-        |> Navbar.brand [ href "#" ] [ text "Me" ]
-        |> Navbar.items
-            [ Navbar.itemLink [ href "home" ] [ text "Home" ] ]
-        |> Navbar.view model.navbarState
+viewNavBar : Element Msg
+viewNavBar =
+    row
+        [ Element.explain Debug.todo
+        , width fill
+        , height (px 100)
+        , spacing 50
+        , Background.color backgroundColor
+        ]
+        [ text "Navbar"
+        , text "Home"
+        , text "Time Line"
+        , text "About"
+        ]
 
 
 
 -- VIEW HOME PAGE
 
 
-viewHomePage : Html Msg
+viewHomePage : Element Msg
 viewHomePage =
-    div [] []
+    el [] (text "Home")

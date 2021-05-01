@@ -40,7 +40,7 @@ type alias Model =
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key Router.Home, Cmd.none )
+    ( Model key <| Router.toRoute url, Cmd.none )
 
 
 
@@ -185,7 +185,13 @@ viewNavBar =
 
 navbarLink : String -> Router.Route -> Element Msg
 navbarLink name route =
-    link [ Font.color (rgb 1 1 1) ] { url = Router.toUrlString route, label = text name }
+    link
+        [ Font.color (rgb 1 1 1)
+        , Border.rounded 5
+        , padding 15
+        , mouseOver [ Background.color primaryColorLight ]
+        ]
+        { url = Router.toUrlString route, label = text name }
 
 
 

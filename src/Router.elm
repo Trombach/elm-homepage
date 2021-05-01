@@ -20,6 +20,7 @@ routeParser : Parser (Route -> a) a
 routeParser =
     oneOf
         [ map Home top
+        , map Home (s "home")
         , map TimeLine (s "timeline")
         , map About (s "about")
         ]

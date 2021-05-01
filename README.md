@@ -1,4 +1,4 @@
-# my new project
+# My ELM homepage
 > 🌳  built with [elm-spa](https://elm-spa.dev)
 
 ## dependencies

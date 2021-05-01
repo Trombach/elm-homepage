@@ -1,7 +1,8 @@
 module Router exposing (..)
 
 import Url
-import Url.Parser as UP exposing ((</>), Parser, int, map, oneOf, s, string, top)
+import Url.Builder as UB
+import Url.Parser as UP exposing ((</>), Parser, map, oneOf, s, top)
 
 
 
@@ -27,3 +28,19 @@ routeParser =
 toRoute : Url.Url -> Route
 toRoute url =
     Maybe.withDefault NotFound (UP.parse routeParser url)
+
+
+toUrlString : Route -> String
+toUrlString route =
+    case route of
+        Home ->
+            UB.relative [ "/" ] []
+
+        TimeLine ->
+            UB.relative [ "timeline" ] []
+
+        About ->
+            UB.relative [ "about" ] []
+
+        NotFound ->
+            UB.relative [ "notFound" ] []

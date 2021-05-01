@@ -46,8 +46,22 @@ timeLineElement from to title =
         [ Background.color <| color White
         , Border.width 0
         , Border.rounded 10
+        , Border.shadow
+            { offset = ( 0, 5 )
+            , size = 1
+            , blur = 10
+            , color = rgb255 190 190 190
+            }
         , width fill
         , padding 10
+        , mouseOver
+            [ Border.shadow
+                { offset = ( 0, 5 )
+                , size = 10
+                , blur = 10
+                , color = rgb255 190 190 190
+                }
+            ]
         ]
         [ timeLineDate from to
         , el [ width <| fillPortion 5 ] (text title)

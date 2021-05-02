@@ -3,6 +3,7 @@ module Pages.Timeline exposing (page)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
+import Element.Font as Font
 import Page exposing (Page)
 import Request exposing (Request)
 import Shared
@@ -13,7 +14,7 @@ import View exposing (View)
 
 
 page : Shared.Model -> Request -> Page
-page model req =
+page _ req =
     Page.static { view = view req }
 
 
@@ -32,6 +33,13 @@ type alias Year =
     Int
 
 
+type alias TimeLineData =
+    { from : MonthYear
+    , to : MonthYear
+    , title : String
+    }
+
+
 type MonthYear
     = Past Month Year
     | Current
@@ -39,15 +47,15 @@ type MonthYear
 
 viewTimeLine : Element Never
 viewTimeLine =
-    column [ centerX, spacing 50 ]
-        [ timeLineElement (Past Apr 2021) Current "eResearch Engagement Specialist"
-        , timeLineElement (Past Aug 2019) (Past Apr 2021) "Full-Stack Developer"
+    row [ centerX, centerY, spacing 50 ]
+        [ timeLineBox <| TimeLineData (Past Apr 2021) Current "eResearch Engagement Specialist"
+        , timeLineBox <| TimeLineData (Past Aug 2019) (Past Apr 2021) "Full-Stack Developer"
         ]
 
 
-timeLineElement : MonthYear -> MonthYear -> String -> Element msg
-timeLineElement from to title =
-    row
+timeLineBox : TimeLineData -> Element msg
+timeLineBox data =
+    column
         [ Background.color <| color White
         , Border.width 0
         , Border.rounded 10
@@ -57,7 +65,7 @@ timeLineElement from to title =
             , blur = 10
             , color = rgb255 190 190 190
             }
-        , width fill
+        , width <| px 400
         , padding 10
         , mouseOver
             [ Border.shadow
@@ -68,9 +76,24 @@ timeLineElement from to title =
                 }
             ]
         ]
-        [ timeLineDate from to
-        , el [ width <| fillPortion 5 ] (text title)
+        [ timeLineContainer data
         ]
+
+
+timeLineContainer : TimeLineData -> Element msg
+timeLineContainer data =
+    column [ width fill, height fill, spacing 10 ]
+        [ timeLineTitle data.title
+        , row
+            []
+            [ timeLineDate data.from data.to
+            ]
+        ]
+
+
+timeLineTitle : String -> Element msg
+timeLineTitle title =
+    el [ width fill, Font.center, Font.bold ] (text title)
 
 
 timeLineDate : MonthYear -> MonthYear -> Element msg

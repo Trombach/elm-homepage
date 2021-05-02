@@ -1,9 +1,6 @@
-module Pages.Home_ exposing (view)
+module Pages.Home_ exposing (page)
 
 import Element exposing (..)
-import Element.Background as Background
-import Element.Region
-import Html
 import Page exposing (Page)
 import Request exposing (Request)
 import Shared
@@ -11,14 +8,19 @@ import UI
 import View exposing (View)
 
 
-view : View msg
-view =
+page : Shared.Model -> Request -> Page
+page _ req =
+    Page.static { view = view req }
+
+
+view : Request -> View Never
+view req =
     { title = "Homepage"
-    , body = [ Element.layout [] <| UI.layout viewHomePage ]
+    , body = [ UI.layout req viewHomePage |> Element.layout [] ]
     }
 
 
-viewHomePage : Element msg
+viewHomePage : Element Never
 viewHomePage =
     row
         [ width fill

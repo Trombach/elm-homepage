@@ -1,14 +1,22 @@
-module Pages.About exposing (view)
+module Pages.About exposing (page)
 
 import Element exposing (Element)
+import Page exposing (Page)
+import Request exposing (Request)
+import Shared exposing (Msg)
 import UI
 import View exposing (View)
 
 
-view : View msg
-view =
+page : Shared.Model -> Request -> Page
+page model req =
+    Page.static { view = view req }
+
+
+view : Request -> View msg
+view req =
     { title = "About"
-    , body = [ Element.layout [] <| UI.layout viewTimeLine ]
+    , body = [ UI.layout req viewTimeLine |> Element.layout [] ]
     }
 
 

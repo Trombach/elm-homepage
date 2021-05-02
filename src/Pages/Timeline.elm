@@ -1,4 +1,4 @@
-module Pages.Timeline exposing (view)
+module Pages.Timeline exposing (page)
 
 import Element exposing (..)
 import Element.Background as Background
@@ -12,10 +12,15 @@ import UiColor exposing (..)
 import View exposing (View)
 
 
-view : View msg
-view =
+page : Shared.Model -> Request -> Page
+page model req =
+    Page.static { view = view req }
+
+
+view : Request -> View Never
+view req =
     { title = "Timeline"
-    , body = [ Element.layout [] <| UI.layout viewTimeLine ]
+    , body = [ UI.layout req viewTimeLine |> Element.layout [] ]
     }
 
 
@@ -32,7 +37,7 @@ type MonthYear
     | Current
 
 
-viewTimeLine : Element msg
+viewTimeLine : Element Never
 viewTimeLine =
     column [ centerX, spacing 50 ]
         [ timeLineElement (Past Apr 2021) Current "eResearch Engagement Specialist"
